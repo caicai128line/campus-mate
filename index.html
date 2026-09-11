@@ -2,316 +2,1114 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+<meta name="theme-color" content="#fffafc">
 <title>CampusMate</title>
 
 <style>
-*{
-  box-sizing:border-box;
-  margin:0;
-  padding:0;
+*{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+--bg:#fffafc;
+--card:rgba(255,255,255,.82);
+--pink:#e99ab2;
+--pink2:#f7c7d5;
+--deep:#d96e91;
+--soft:#fff0f5;
+--text:#342f34;
+--muted:#8f8790;
+--line:rgba(225,190,202,.48);
+--shadow:0 12px 35px rgba(184,120,143,.08);
 }
 
 body{
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC",sans-serif;
-  background:#f6f7fb;
-  color:#222;
-  max-width:520px;
-  margin:auto;
-  padding-bottom:90px;
+min-height:100vh;
+font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
+color:var(--text);
+background:
+radial-gradient(circle at 10% 0%,rgba(255,222,232,.68),transparent 31%),
+radial-gradient(circle at 92% 14%,rgba(255,235,241,.72),transparent 28%),
+linear-gradient(180deg,#fffafd 0%,#fff 100%);
+padding-bottom:100px;
 }
 
-header{
-  padding:28px 22px 18px;
-  background:linear-gradient(135deg,#7c83ff,#9b7cff);
-  color:white;
-  border-radius:0 0 30px 30px;
+button,input,textarea{font:inherit}
+button{border:0;cursor:pointer}
+.app{width:min(100%,980px);margin:auto;padding:18px 16px 28px}
+
+.topbar{
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:12px;
+padding:8px 4px 18px;
 }
 
-header h1{
-  font-size:28px;
-  margin-bottom:6px;
+.brand{
+font-family:Georgia,serif;
+font-style:italic;
+font-size:36px;
+color:var(--deep);
 }
 
-#date{
-  opacity:.85;
-  font-size:14px;
+.tagline{
+margin-top:6px;
+font-size:9px;
+letter-spacing:3px;
+color:#9d9099;
 }
 
-.quote{
-  margin-top:18px;
-  font-size:15px;
+.avatar{
+width:44px;
+height:44px;
+border-radius:50%;
+background:white;
+border:1px solid var(--line);
+display:grid;
+place-items:center;
+font-size:22px;
+box-shadow:var(--shadow);
 }
 
-.container{
-  padding:18px;
+.hero{
+position:relative;
+overflow:hidden;
+min-height:250px;
+padding:28px 22px;
+border-radius:28px;
+border:1px solid var(--line);
+box-shadow:var(--shadow);
+background:linear-gradient(120deg,#fffafc,#f9e8ee 58%,#f8dfe7);
+}
+
+.hero h1{
+position:relative;
+z-index:3;
+font-family:"Songti SC","STSong",serif;
+font-size:28px;
+font-weight:500;
+line-height:1.65;
+}
+
+.hero-en{
+position:relative;
+z-index:3;
+margin-top:16px;
+font-family:Georgia,serif;
+font-size:10px;
+letter-spacing:3px;
+line-height:1.7;
+color:#766f76;
+}
+
+.sticky{
+position:absolute;
+right:15px;
+top:18px;
+z-index:5;
+width:115px;
+padding:13px 9px;
+background:rgba(255,255,255,.78);
+border:1px solid white;
+border-radius:4px;
+transform:rotate(4deg);
+font-family:Georgia,serif;
+font-style:italic;
+font-size:9px;
+line-height:1.7;
+color:#756770;
+}
+
+.mascot{
+position:absolute;
+right:22px;
+bottom:14px;
+font-size:82px;
+filter:drop-shadow(0 10px 12px rgba(150,100,120,.08));
+}
+
+.notice{
+margin-top:12px;
+min-height:48px;
+padding:0 15px;
+border-radius:17px;
+border:1px solid var(--line);
+background:rgba(255,255,255,.72);
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:10px;
+font-size:13px;
+color:#817880;
+box-shadow:var(--shadow);
+}
+
+.grid{
+display:grid;
+grid-template-columns:1fr;
+gap:13px;
+margin-top:13px;
 }
 
 .card{
-  background:white;
-  border-radius:20px;
-  padding:18px;
-  margin-bottom:16px;
-  box-shadow:0 5px 18px rgba(0,0,0,.06);
+border-radius:24px;
+padding:18px;
+border:1px solid var(--line);
+background:var(--card);
+box-shadow:var(--shadow);
 }
 
-.card h2{
-  font-size:18px;
-  margin-bottom:14px;
+.card-title{
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:10px;
+margin-bottom:15px;
 }
 
-.countdown{
-  background:linear-gradient(135deg,#fff0f4,#f2edff);
-}
+.card-title h2{font-size:17px}
+.subtle{font-size:12px;color:var(--muted)}
 
 .days{
-  font-size:38px;
-  font-weight:700;
-  color:#7b67e8;
+font-family:Georgia,serif;
+font-size:82px;
+color:var(--deep);
+line-height:.9;
 }
 
-.small{
-  font-size:13px;
-  color:#777;
+.days-unit{font-size:24px}
+
+.countdown-main{
+display:flex;
+align-items:end;
+gap:5px;
+}
+
+.exam-btn{
+margin-top:13px;
+padding:9px 12px;
+border-radius:12px;
+background:var(--soft);
+color:#665e65;
 }
 
 .progress{
-  height:9px;
-  background:#eee;
-  border-radius:10px;
-  margin-top:12px;
-  overflow:hidden;
+height:8px;
+margin-top:16px;
+background:#f8edf1;
+border-radius:99px;
+overflow:hidden;
 }
 
 .progress-bar{
-  height:100%;
-  width:0%;
-  background:#7c83ff;
-  border-radius:10px;
-  transition:.3s;
+height:100%;
+width:50%;
+border-radius:99px;
+background:linear-gradient(90deg,#f1b0c2,#df7f9d);
 }
 
-input,textarea{
-  width:100%;
-  border:none;
-  background:#f3f4f8;
-  padding:13px;
-  border-radius:13px;
-  outline:none;
-  margin-bottom:10px;
-  font-size:15px;
+.quote{
+margin-top:14px;
+color:#8c7e86;
+font-family:"Songti SC","STSong",serif;
+line-height:1.7;
 }
 
-textarea{
-  min-height:100px;
-  resize:none;
+.todo-item{
+min-height:44px;
+display:grid;
+grid-template-columns:28px 1fr auto;
+gap:8px;
+align-items:center;
+border-bottom:1px solid #f1e5e9;
 }
 
-button{
-  border:none;
-  background:#7c83ff;
-  color:white;
-  padding:11px 16px;
-  border-radius:12px;
-  font-size:14px;
+.todo-check{
+width:22px;
+height:22px;
+border-radius:7px;
+border:1px solid #aaa2a9;
+background:white;
 }
 
-.task{
+.todo-item.done .todo-check{
+background:var(--pink);
+color:white;
+}
+
+.todo-item.done .todo-text{
+text-decoration:line-through;
+color:#aaa;
+}
+
+.todo-delete{
+background:transparent;
+color:#c6b8bf;
+font-size:18px;
+}
+
+.todo-add{
+display:flex;
+gap:8px;
+margin-top:13px;
+}
+
+.input,textarea{
+width:100%;
+border:1px solid var(--line);
+outline:none;
+border-radius:15px;
+background:rgba(255,255,255,.65);
+padding:13px;
+font-size:16px;
+}
+
+.add-btn{
+min-width:52px;
+border-radius:15px;
+background:var(--pink2);
+color:#7a4052;
+font-size:20px;
+}
+
+.timer-wrap{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:14px;
+  padding:12px 0;
+}
+
+.timer-circle{
+  width:150px;
+  height:150px;
+  border-radius:50%;
   display:flex;
   align-items:center;
-  gap:10px;
-  padding:11px 4px;
-  border-bottom:1px solid #eee;
+  justify-content:center;
+  background:rgba(255,255,255,.72);
+  border:10px solid #f8dce4;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.8);
 }
 
-.task:last-child{
-  border-bottom:none;
+.timer-time{
+  font-size:34px;
+  font-weight:700;
+  color:#6d5058;
+  letter-spacing:1px;
 }
 
-.task span{
-  flex:1;
+.timer-buttons{
+  display:flex;
+  gap:9px;
+  justify-content:center;
 }
 
-.task.done span{
-  text-decoration:line-through;
-  color:#aaa;
+.timer-btn{
+  border:0;
+  padding:10px 17px;
+  border-radius:999px;
+  background:#f3cbd6;
+  color:#754b57;
+  font-weight:700;
 }
 
-.task input{
-  width:20px;
-  height:20px;
-  margin:0;
-}
-
-.delete{
-  background:none;
-  color:#aaa;
-  padding:5px;
-  font-size:18px;
+.timer-btn.secondary{
+  background:rgba(255,255,255,.75);
+  border:1px solid var(--line);
 }
 
 .study-grid{
   display:grid;
-  grid-template-columns:1fr 1fr;
+  grid-template-columns:repeat(2,1fr);
   gap:10px;
+  margin-top:14px;
 }
 
 .study-item{
-  background:#f5f5fa;
-  padding:15px;
-  border-radius:14px;
+  padding:14px 10px;
+  border-radius:17px;
+  background:rgba(255,255,255,.62);
+  border:1px solid rgba(255,255,255,.8);
   text-align:center;
   cursor:pointer;
 }
 
 .study-item.done{
-  background:#e8e7ff;
-  color:#6258c8;
+  background:#f6d9e1;
 }
 
-.study-item div{
-  font-size:25px;
+.study-icon{
+  font-size:22px;
   margin-bottom:6px;
 }
 
-.nav{
-  position:fixed;
-  bottom:0;
-  left:50%;
-  transform:translateX(-50%);
-  width:100%;
-  max-width:520px;
-  background:white;
-  border-top:1px solid #eee;
+.study-name{
+  font-size:14px;
+  font-weight:700;
+  color:#70565d;
+}
+
+.memo{
+  min-height:125px;
+  resize:none;
+  margin-top:13px;
+  line-height:1.7;
+}
+
+.photo-strip{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:9px;
+  margin-top:14px;
+}
+
+.photo{
+  aspect-ratio:1/1;
+  border-radius:18px;
   display:flex;
-  justify-content:space-around;
-  padding:10px 0 18px;
+  align-items:center;
+  justify-content:center;
+  font-size:34px;
+  background:linear-gradient(145deg,#fff8f5,#f6d8df);
+  border:1px solid rgba(255,255,255,.9);
 }
 
-.nav div{
-  font-size:12px;
-  color:#666;
-  text-align:center;
+.encourage{
+  margin-top:12px;
+  padding:14px;
+  border-radius:18px;
+  background:#fff7f3;
+  color:#81666d;
+  font-size:14px;
+  line-height:1.7;
 }
 
-.nav b{
+.bottom-nav{
+  position:fixed;
+  left:50%;
+  bottom:12px;
+  transform:translateX(-50%);
+  width:min(94%,650px);
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  padding:8px 6px;
+  background:rgba(255,250,248,.88);
+  backdrop-filter:blur(18px);
+  -webkit-backdrop-filter:blur(18px);
+  border:1px solid rgba(255,255,255,.9);
+  border-radius:24px;
+  box-shadow:0 12px 35px rgba(123,80,92,.14);
+  z-index:50;
+}
+
+.nav-item{
+  border:0;
+  background:transparent;
+  color:#9b858b;
+  font-size:11px;
+  padding:6px 2px;
+}
+
+.nav-item span{
   display:block;
   font-size:20px;
   margin-bottom:3px;
 }
 
-.save-tip{
-  color:#888;
-  font-size:12px;
-  margin-top:7px;
+.nav-item.active{
+  color:#c26f87;
+  font-weight:700;
 }
 
-.section-title{
-  margin-bottom:5px;
+.toast{
+  position:fixed;
+  left:50%;
+  bottom:92px;
+  transform:translateX(-50%) translateY(20px);
+  background:#6d555c;
+  color:white;
+  padding:10px 16px;
+  border-radius:999px;
+  font-size:13px;
+  opacity:0;
+  pointer-events:none;
+  transition:.25s;
+  z-index:100;
+  white-space:nowrap;
 }
 
-.today{
-  font-size:14px;
-  color:#777;
+.toast.show{
+  opacity:1;
+  transform:translateX(-50%) translateY(0);
 }
-</style>
+
+.modal{
+  position:fixed;
+  inset:0;
+  background:rgba(73,52,58,.25);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:22px;
+  z-index:200;
+}
+
+.modal.show{
+  display:flex;
+}
+
+.modal-box{
+  width:min(100%,380px);
+  background:#fffaf8;
+  border-radius:26px;
+  padding:22px;
+  box-shadow:0 20px 60px rgba(91,57,67,.2);
+}
+
+.modal-box h3{
+  margin-bottom:14px;
+  color:#694f57;
+}
+
+.modal-actions{
+  display:flex;
+  gap:10px;
+  margin-top:16px;
+}
+
+.modal-actions button{
+  flex:1;
+  border:0;
+  border-radius:14px;
+  padding:12px;
+  font-weight:700;
+}
+
+.s9ave-btn{
+  background:#efc4d0;
+  color:#704650;
+}
+
+.cancel-btn{
+  background:#f3ecea;
+  color:#7b6b6f;
+}
+
+@media(min-width:720px){
+  .page{
+    max-width:1050px;
+  }
+
+  .dashboard{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .hero{
+    min-height:330px;
+  }
+  }
+
+  </style>
 </head>
 
 <body>
+<div class="page">
 
-<header>
-  <h1>CampusMate 🎓</h1>
-  <div id="date"></div>
-  <div class="quote">今天也向自己的目标靠近一点点 ✨</div>
-</header>
-
-<div class="container">
-
-  <div class="card countdown">
-    <div class="small">📚 英语三级考试倒计时</div>
+  <header class="topbar">
     <div>
-      <span class="days" id="days">--</span>
-      <span> 天</span>
+      <div class="logo">CampusMate*</div>
+      <div class="subtitle">STUDY · LIFE · A BRIGHTER YOU.</div>
+    </div>
+    <div class="top-actions">
+      <button onclick="showToast('搜索功能之后可以继续加 ♡')">⌕</button>
+      <button onclick="showToast('今天也要记得完成任务呀 ♡')">♡</button>
+      <button onclick="showToast('Hi，欢迎回来！')">🐶</button>
+    </div>
+  </header>
+
+  <section class="hero" id="home">
+    <div class="hero-text">
+      <div class="hero-mini">MY CAMPUS DAYS</div>
+      <h1>按自己的节奏，<br>慢慢变好。</h1>
+      <p>A CALMER MIND<br>A BRIGHTER YOU.</p>
     </div>
 
-    <input type="date" id="examDate" onchange="saveExam()">
+    <div class="hero-art">
+      <div class="girl">
+        <div class="hair"></div>
+        <div class="face">
+          <i class="eye left"></i>
+          <i class="eye right"></i>
+          <i class="blush left"></i>
+          <i class="blush right"></i>
+        </div>
+      </div>
+      <div class="dog">🐶</div>
+    </div>
 
-    <div class="small">设置你的考试日期，我会自动帮你倒数。</div>
+    <div class="sticky">
+      Same Campus<br>
+      Same Dreams<br>
+      <b>A Brighter You.</b>
+    </div>
+  </section>
+
+  <div class="notice">
+    <span>♡ 今天也要好好学习呀！</span>
+    <span id="todayText"></span>
   </div>
 
+  <main class="dashboard">
 
-  <div class="card">
-    <h2>🔥 今日完成度</h2>
+    <section class="card countdown-card" id="study">
+      <div class="card-head">
+        <div>
+          <div class="small-title">ENGLISH LEVEL 3</div>
+          <h2>英语三级考试倒计时</h2>
+        </div>
+        <button class="tiny-btn" onclick="openDateModal()">修改日期</button>
+      </div>
 
+      <div class="count-row">
+        <span id="days">--</span>
+        <small>天</small>
+      </div>
+
+      <div class="exam-date" id="examDateText"></div>
+
+      <div class="progress">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+
+      <p class="soft-text">一点一点准备，就会离目标越来越近 ♡</p>
+    </section>
+
+    <section class="card" id="todoSection">
+      <div class="card-head">
+        <div>
+          <div class="small-title">TODAY'S PLAN</div>
+          <h2>今日待办</h2>
+        </div>
+        <span class="task-count" id="taskCount">0/0</span>
+      </div>
+
+      <div id="todoList"></div>
+
+      <div class="todo-add">
+        <input id="todoInput" placeholder="添加一个新任务…" maxlength="40">
+        <button class="add-btn" onclick="addTodo()">＋</button>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="card-head">
+        <div>
+          <div class="small-title">FOCUS TIME</div>
+          <h2>今日专注 · 番茄钟</h2>
+        </div>
+        <span>🍅</span>
+      </div>
+
+      <div class="timer-wrap">
+        <div class="timer-circle">
+          <div class="timer-time" id="timer">25:00</div>
+        </div>
+        <div class="timer-buttons">
+  <button class="timer-btn" id="startTimerBtn" onclick="toggleTimer()">开始专注</button>
+  <button class="timer-btn secondary" onclick="resetTimer()">重置</button>
+</div>
+
+</div>
+</section>
+
+<section class="card">
+  <div class="card-head">
     <div>
-      <span id="completeText">0 / 4</span>
+      <div class="small-title">DAILY CHECK</div>
+      <h2>学习打卡</h2>
+    </div>
+    <span id="studyCount">0/4</span>
+  </div>
+
+  <div class="study-grid">
+    <div class="study-item" data-study="单词" onclick="toggleStudy(this)">
+      <div class="study-icon">📖</div>
+      <div class="study-name">单词</div>
     </div>
 
-    <div class="progress">
-      <div class="progress-bar" id="progressBar"></div>
+    <div class="study-item" data-study="听力" onclick="toggleStudy(this)">
+      <div class="study-icon">🎧</div>
+      <div class="study-name">听力</div>
+    </div>
+
+    <div class="study-item" data-study="阅读" onclick="toggleStudy(this)">
+      <div class="study-icon">☕</div>
+      <div class="study-name">阅读</div>
+    </div>
+
+    <div class="study-item" data-study="写作" onclick="toggleStudy(this)">
+      <div class="study-icon">✏️</div>
+      <div class="study-name">写作</div>
     </div>
   </div>
+</section>
+<section class="card">
+  <div class="card-head">
+    <div>
+      <div class="small-title">QUICK NOTE</div>
+      <h2>随手记录</h2>
+    </div>
+    <span>📝</span>
+  </div>
 
+  <textarea id="quickNote"
+    rows="5"
+    placeholder="今天有什么想记下来的？"
+    oninput="saveNote()"></textarea>
 
-  <div class="card">
-    <h2>📚 英语三级 · 今日打卡</h2>
+  <div class="note-tip">内容会自动保存 ♡</div>
+</section>
 
-    <div class="study-grid">
+<section class="card little-world">
+  <div class="card-head">
+    <div>
+      <div class="small-title">MY LITTLE WORLD</div>
+      <h2>我的小世界</h2>
+    </div>
+    <span>🐶</span>
+  </div>
 
-      <div class="study-item" onclick="toggleStudy(this,0)">
-        <div>🔤</div>
-        背单词
-      </div>
+  <div class="photo-strip">
+    <div class="photo">☁️</div>
+    <div class="photo">🎧</div>
+    <div class="photo">📚</div>
+  </div>
 
-      <div class="study-item" onclick="toggleStudy(this,1)">
-        <div>🎧</div>
-        听力
-      </div>
+  <div class="encourage">
+    今天也已经做得很好啦。<br>
+    <small>慢慢来，我们不赶时间 ♡</small>
+  </div>
+</section>
 
-      <div class="study-item" onclick="toggleStudy(this,2)">
-        <div>📖</div>
-        阅读
-      </div>
+  </main>
+  <nav class="bottom-nav">
+  <button class="nav-item active" onclick="goHome(this)">
+    <span>⌂</span>
+    <small>首页</small>
+  </button>
 
-      <div class="study-item" onclick="toggleStudy(this,3)">
-        <div>✍️</div>
-        写作 / 翻译
-      </div>
+  <button class="nav-item" onclick="showToast('课程表下一步我们继续做 ♡')">
+    <span>▦</span>
+    <small>课程表</small>
+  </button>
 
+  <button class="nav-item" onclick="goStudy(this)">
+    <span>✎</span>
+    <small>学习</small>
+  </button>
+
+  <button class="nav-item" onclick="goNote(this)">
+    <span>☷</span>
+    <small>备忘录</small>
+  </button>
+
+  <button class="nav-item" onclick="showToast('个人中心下一步继续完善 ♡')">
+    <span>♡</span>
+    <small>我的</small>
+  </button>
+</nav>
+
+<div class="modal" id="dateModal">
+  <div class="modal-box">
+    <div class="small-title">EXAM DATE</div>
+    <h2>修改考试日期</h2>
+
+    <input type="date" id="examDateInput">
+
+    <div class="modal-actions">
+      <button class="cancel-btn" onclick="closeDateModal()">取消</button>
+      <button class="save-btn" onclick="saveExamDate()">保存</button>
     </div>
   </div>
+</div>
 
+<div class="toast" id="toast"></div>
+<script>
+const TODAY = new Date().toLocaleDateString('en-CA');
 
-  <div class="card">
-    <h2>✅ 今日待办</h2>
+function showToast(text){
+  const toast = document.getElementById('toast');
+  toast.textContent = text;
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 1800);
+}
 
-    <input
-      id="taskInput"
-      placeholder="例如：下午交英语作业"
-    >
+function openDateModal(){
+  const saved = localStorage.getItem('campusMateExamDate') || '2026-11-22';
+  document.getElementById('examDateInput').value = saved;
+  document.getElementById('dateModal').classList.add('show');
+}
 
-    <button onclick="addTask()">＋ 添加任务</button>
+function closeDateModal(){
+  document.getElementById('dateModal').classList.remove('show');
+}
 
-    <div id="taskList"></div>
-  </div>
+function saveExamDate(){
+  const value = document.getElementById('examDateInput').value;
 
+  if(!value){
+    showToast('请选择考试日期');
+    return;
+  }
 
-  <div class="card">
-    <h2>📝 随手备忘</h2>
+  localStorage.setItem('campusMateExamDate', value);
+  updateCountdown();
+  closeDateModal();
+  showToast('考试日期保存好啦 ♡');
+}
 
-    <textarea
-      id="memo"
-      placeholder="突然想到的事情、明天要带的东西、重要提醒……"
-      oninput="saveMemo()"
-    ></textarea>
+function updateCountdown(){
+  const value = localStorage.getItem('campusMateExamDate') || '2026-11-22';
+  const exam = new Date(value + 'T00:00:00');
+  const now = new Date();
 
-    <div class="save-tip">自动保存 ✓</div>
-  </div>
+  now.setHours(0,0,0,0);
 
+  const days = Math.max(
+    0,
+    Math.ceil((exam - now) / 86400000)
+  );
 
-  <div class="card">
-    <h2>🎯 学习计划</h2>
+  const daysEl = document.getElementById('days');
+  if(daysEl) daysEl.textContent = days;
 
-    <input
-      id="planInput"
-      placeholder="例如：本周完成英语阅读第
+  const dateText = document.getElementById('examDateText');
+  if(dateText) dateText.textContent = value;
+}
+  let todoData = [];
+
+function loadTodos(){
+  const saved = localStorage.getItem('campusMateTodos');
+
+  if(saved){
+    try{
+      todoData = JSON.parse(saved);
+    }catch(e){
+      todoData = [];
+    }
+  }
+
+  if(!Array.isArray(todoData) || todoData.length === 0){
+    todoData = [
+      {text:'背单词 50 个',done:false},
+      {text:'听力真题一套',done:false},
+      {text:'专业课复习',done:false},
+      {text:'运动 30 分钟',done:false}
+    ];
+  }
+
+  renderTodos();
+}
+
+function saveTodos(){
+  localStorage.setItem(
+    'campusMateTodos',
+    JSON.stringify(todoData)
+  );
+}
+
+function renderTodos(){
+  const list = document.getElementById('todoList');
+  if(!list) return;
+
+  list.innerHTML = '';
+
+  todoData.forEach((todo,index)=>{
+    const row = document.createElement('div');
+    row.className = 'todo-item' + (todo.done ? ' done' : '');
+
+    row.innerHTML = `
+      <button class="todo-check" onclick="toggleTodo(${index})">
+        ${todo.done ? '✓' : ''}
+      </button>
+
+      <div class="todo-text">${todo.text}</div>
+
+      <button class="todo-delete" onclick="deleteTodo(${index})">
+        ×
+      </button>
+    `;
+
+    list.appendChild(row);
+  });
+
+  const done = todoData.filter(item=>item.done).length;
+  const count = document.getElementById('taskCount');
+
+  if(count){
+    count.textContent = done + '/' + todoData.length;
+  }
+
+  saveTodos();
+}
+
+function addTodo(){
+  const input = document.getElementById('todoInput');
+  const text = input.value.trim();
+
+  if(!text) return;
+
+  todoData.push({
+    text:text,
+    done:false
+  });
+
+  input.value = '';
+  renderTodos();
+  showToast('已加入今日待办 ♡');
+}
+
+function toggleTodo(index){
+  todoData[index].done = !todoData[index].done;
+  renderTodos();
+}
+
+function deleteTodo(index){
+  todoData.splice(index,1);
+  renderTodos();
+  }
+  let timerSeconds = 25 * 60;
+let timerRunning = false;
+let timerInterval = null;
+
+function updateTimerText(){
+  const timer = document.getElementById('timer');
+  if(!timer) return;
+
+  const minutes = Math.floor(timerSeconds / 60);
+  const seconds = timerSeconds % 60;
+
+  timer.textContent =
+    String(minutes).padStart(2,'0') +
+    ':' +
+    String(seconds).padStart(2,'0');
+}
+
+function toggleTimer(){
+  const btn = document.getElementById('startTimerBtn');
+
+  if(timerRunning){
+    timerRunning = false;
+    clearInterval(timerInterval);
+    timerInterval = null;
+
+    if(btn) btn.textContent = '继续专注';
+    return;
+  }
+
+  timerRunning = true;
+  if(btn) btn.textContent = '暂停';
+
+  timerInterval = setInterval(()=>{
+    timerSeconds--;
+
+    if(timerSeconds <= 0){
+      timerSeconds = 0;
+      timerRunning = false;
+      clearInterval(timerInterval);
+      timerInterval = null;
+
+      if(btn) btn.textContent = '开始专注';
+
+      updateTimerText();
+      showToast('25 分钟完成啦 ♡');
+      return;
+    }
+
+    updateTimerText();
+  },1000);
+}
+
+function resetTimer(){
+  timerRunning = false;
+
+  if(timerInterval){
+    clearInterval(timerInterval);
+    timerInterval = null;
+  }
+
+  timerSeconds = 25 * 60;
+
+  const btn = document.getElementById('startTimerBtn');
+  if(btn) btn.textContent = '开始专注';
+
+  updateTimerText();
+  showToast('番茄钟已重置');
+}
+
+let studyData = {};
+
+function loadStudy(){
+  const saved = localStorage.getItem('campusMateStudy');
+
+  if(saved){
+    try{
+      studyData = JSON.parse(saved);
+    }catch(e){
+      studyData = {};
+    }
+  }
+
+  document.querySelectorAll('.study-item').forEach(item=>{
+    const name = item.dataset.study;
+
+    if(studyData[name]){
+      item.classList.add('done');
+    }
+  });
+
+  updateStudyCount();
+}
+
+function toggleStudy(el){
+  const name = el.dataset.study;
+
+  studyData[name] = !studyData[name];
+
+  el.classList.toggle('done', studyData[name]);
+
+  localStorage.setItem(
+    'campusMateStudy',
+    JSON.stringify(studyData)
+  );
+
+  updateStudyCount();
+
+  if(studyData[name]){
+    showToast(name + ' 打卡成功 ♡');
+  }
+}
+
+function updateStudyCount(){
+  const total = document.querySelectorAll('.study-item').length;
+  const done = document.querySelectorAll('.study-item.done').length;
+
+  const count = document.getElementById('studyCount');
+
+  if(count){
+    count.textContent = done + '/' + total;
+  }
+        }
+  function saveNote(){
+  const note = document.getElementById('quickNote');
+  if(!note) return;
+
+  localStorage.setItem(
+    'campusMateNote',
+    note.value
+  );
+}
+
+function loadNote(){
+  const note = document.getElementById('quickNote');
+  if(!note) return;
+
+  note.value =
+    localStorage.getItem('campusMateNote') || '';
+}
+
+function setActiveNav(btn){
+  document.querySelectorAll('.nav-item').forEach(item=>{
+    item.classList.remove('active');
+  });
+
+  if(btn) btn.classList.add('active');
+}
+
+function goHome(btn){
+  setActiveNav(btn);
+
+  window.scrollTo({
+    top:0,
+    behavior:'smooth'
+  });
+}
+
+function goStudy(btn){
+  setActiveNav(btn);
+
+  const el = document.getElementById('study');
+  if(el){
+    el.scrollIntoView({
+      behavior:'smooth',
+      block:'start'
+    });
+  }
+}
+
+function goNote(btn){
+  setActiveNav(btn);
+
+  const el = document.getElementById('quickNote');
+  if(el){
+    el.scrollIntoView({
+      behavior:'smooth',
+      block:'center'
+    });
+
+    setTimeout(()=>{
+      el.focus();
+    },500);
+  }
+}
+
+function updateToday(){
+  const el = document.getElementById('todayText');
+  if(!el) return;
+
+  const now = new Date();
+
+  const week = [
+    '星期日',
+    '星期一',
+    '星期二',
+    '星期三',
+    '星期四',
+    '星期五',
+    '星期六'
+  ];
+
+  el.textContent =
+    (now.getMonth()+1) +
+    '月' +
+    now.getDate() +
+    '日 · ' +
+    week[now.getDay()];
+}
+
+document.getElementById('todoInput')
+?.addEventListener('keydown',function(e){
+  if(e.key === 'Enter'){
+    addTodo();
+  }
+});
+
+document.getElementById('dateModal')
+?.addEventListener('click',function(e){
+  if(e.target === this){
+    closeDateModal();
+  }
+});
+
+updateToday();
+updateCountdown();
+loadTodos();
+loadStudy();
+loadNote();
+updateTimerText();
+
+</script>
+</body>
+</html>

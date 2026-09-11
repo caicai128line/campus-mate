@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CampusMate</title>
+
+<style>
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC",sans-serif;
+  background:#f6f7fb;
+  color:#222;
+  max-width:520px;
+  margin:auto;
+  padding-bottom:90px;
+}
+
+header{
+  padding:28px 22px 18px;
+  background:linear-gradient(135deg,#7c83ff,#9b7cff);
+  color:white;
+  border-radius:0 0 30px 30px;
+}
+
+header h1{
+  font-size:28px;
+  margin-bottom:6px;
+}
+
+#date{
+  opacity:.85;
+  font-size:14px;
+}
+
+.quote{
+  margin-top:18px;
+  font-size:15px;
+}
+
+.container{
+  padding:18px;
+}
+
+.card{
+  background:white;
+  border-radius:20px;
+  padding:18px;
+  margin-bottom:16px;
+  box-shadow:0 5px 18px rgba(0,0,0,.06);
+}
+
+.card h2{
+  font-size:18px;
+  margin-bottom:14px;
+}
+
+.countdown{
+  background:linear-gradient(135deg,#fff0f4,#f2edff);
+}
+
+.days{
+  font-size:38px;
+  font-weight:700;
+  color:#7b67e8;
+}
+
+.small{
+  font-size:13px;
+  color:#777;
+}
+
+.progress{
+  height:9px;
+  background:#eee;
+  border-radius:10px;
+  margin-top:12px;
+  overflow:hidden;
+}
+
+.progress-bar{
+  height:100%;
+  width:0%;
+  background:#7c83ff;
+  border-radius:10px;
+  transition:.3s;
+}
+
+input,textarea{
+  width:100%;
+  border:none;
+  background:#f3f4f8;
+  padding:13px;
+  border-radius:13px;
+  outline:none;
+  margin-bottom:10px;
+  font-size:15px;
+}
+
+textarea{
+  min-height:100px;
+  resize:none;
+}
+
+button{
+  border:none;
+  background:#7c83ff;
+  color:white;
+  padding:11px 16px;
+  border-radius:12px;
+  font-size:14px;
+}
+
+.task{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:11px 4px;
+  border-bottom:1px solid #eee;
+}
+
+.task:last-child{
+  border-bottom:none;
+}
+
+.task span{
+  flex:1;
+}
+
+.task.done span{
+  text-decoration:line-through;
+  color:#aaa;
+}
+
+.task input{
+  width:20px;
+  height:20px;
+  margin:0;
+}
+
+.delete{
+  background:none;
+  color:#aaa;
+  padding:5px;
+  font-size:18px;
+}
+
+.study-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+
+.study-item{
+  background:#f5f5fa;
+  padding:15px;
+  border-radius:14px;
+  text-align:center;
+  cursor:pointer;
+}
+
+.study-item.done{
+  background:#e8e7ff;
+  color:#6258c8;
+}
+
+.study-item div{
+  font-size:25px;
+  margin-bottom:6px;
+}
+
+.nav{
+  position:fixed;
+  bottom:0;
+  left:50%;
+  transform:translateX(-50%);
+  width:100%;
+  max-width:520px;
+  background:white;
+  border-top:1px solid #eee;
+  display:flex;
+  justify-content:space-around;
+  padding:10px 0 18px;
+}
+
+.nav div{
+  font-size:12px;
+  color:#666;
+  text-align:center;
+}
+
+.nav b{
+  display:block;
+  font-size:20px;
+  margin-bottom:3px;
+}
+
+.save-tip{
+  color:#888;
+  font-size:12px;
+  margin-top:7px;
+}
+
+.section-title{
+  margin-bottom:5px;
+}
+
+.today{
+  font-size:14px;
+  color:#777;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>CampusMate 🎓</h1>
+  <div id="date"></div>
+  <div class="quote">今天也向自己的目标靠近一点点 ✨</div>
+</header>
+
+<div class="container">
+
+  <div class="card countdown">
+    <div class="small">📚 英语三级考试倒计时</div>
+    <div>
+      <span class="days" id="days">--</span>
+      <span> 天</span>
+    </div>
+
+    <input type="date" id="examDate" onchange="saveExam()">
+
+    <div class="small">设置你的考试日期，我会自动帮你倒数。</div>
+  </div>
+
+
+  <div class="card">
+    <h2>🔥 今日完成度</h2>
+
+    <div>
+      <span id="completeText">0 / 4</span>
+    </div>
+
+    <div class="progress">
+      <div class="progress-bar" id="progressBar"></div>
+    </div>
+  </div>
+
+
+  <div class="card">
+    <h2>📚 英语三级 · 今日打卡</h2>
+
+    <div class="study-grid">
+
+      <div class="study-item" onclick="toggleStudy(this,0)">
+        <div>🔤</div>
+        背单词
+      </div>
+
+      <div class="study-item" onclick="toggleStudy(this,1)">
+        <div>🎧</div>
+        听力
+      </div>
+
+      <div class="study-item" onclick="toggleStudy(this,2)">
+        <div>📖</div>
+        阅读
+      </div>
+
+      <div class="study-item" onclick="toggleStudy(this,3)">
+        <div>✍️</div>
+        写作 / 翻译
+      </div>
+
+    </div>
+  </div>
+
+
+  <div class="card">
+    <h2>✅ 今日待办</h2>
+
+    <input
+      id="taskInput"
+      placeholder="例如：下午交英语作业"
+    >
+
+    <button onclick="addTask()">＋ 添加任务</button>
+
+    <div id="taskList"></div>
+  </div>
+
+
+  <div class="card">
+    <h2>📝 随手备忘</h2>
+
+    <textarea
+      id="memo"
+      placeholder="突然想到的事情、明天要带的东西、重要提醒……"
+      oninput="saveMemo()"
+    ></textarea>
+
+    <div class="save-tip">自动保存 ✓</div>
+  </div>
+
+
+  <div class="card">
+    <h2>🎯 学习计划</h2>
+
+    <input
+      id="planInput"
+      placeholder="例如：本周完成英语阅读第

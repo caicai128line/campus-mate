@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+<meta name="theme-color" content="#fffafc">
+<title>CampusMate</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#fffafc;--card:rgba(255,255,255,.88);--pink:#e99ab2;--pink2:#f7c7d5;
+  --deep:#d96e91;--soft:#fff0f5;--text:#342f34;--muted:#8f8790;
+  --line:rgba(225,190,202,.5);--shadow:0 12px 35px rgba(184,120,143,.09);
+}
+html{scroll-behavior:smooth}
+body{
+  min-height:100vh;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
+  color:var(--text);background:
+  radial-gradient(circle at 10% 0%,rgba(255,222,232,.66),transparent 30%),
+  radial-gradient(circle at 92% 14%,rgba(255,235,241,.7),transparent 28%),
+  linear-gradient(180deg,#fffafd,#fff);padding-bottom:104px
+}
+button,input,textarea,select{font:inherit}button{border:0;cursor:pointer}
+.app{width:min(100%,980px);margin:auto;padding:18px 16px 28px}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:8px 4px 18px}
+.brand{font-family:Georgia,serif;font-style:italic;font-size:36px;color:var(--deep)}
+.tagline{margin-top:6px;font-size:9px;letter-spacing:3px;color:#9d9099}
+.top-actions{display:flex;gap:8px}.icon-btn{width:42px;height:42px;border-radius:50%;background:white;border:1px solid var(--line);box-shadow:var(--shadow)}
+.hero{position:relative;overflow:hidden;min-height:250px;padding:28px 22px;border-radius:28px;border:1px solid var(--line);box-shadow:var(--shadow);background:linear-gradient(120deg,#fffafc,#f9e8ee 58%,#f8dfe7)}
+.hero h1{font-family:"Songti SC","STSong",serif;font-size:28px;font-weight:500;line-height:1.6;max-width:58%}
+.hero-en{margin-top:16px;font-family:Georgia,serif;font-size:10px;letter-spacing:3px;line-height:1.7;color:#766f76}
+.sticky{position:absolute;right:15px;top:18px;width:120px;padding:13px 9px;background:rgba(255,255,255,.82);border:1px solid white;border-radius:5px;transform:rotate(4deg);font-family:Georgia,serif;font-style:italic;font-size:10px;line-height:1.7;color:#756770}
+.hero-dog{position:absolute;right:28px;bottom:18px;font-size:76px}
+.notice{margin-top:12px;min-height:48px;padding:0 15px;border-radius:17px;border:1px solid var(--line);background:rgba(255,255,255,.76);display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:13px;color:#817880;box-shadow:var(--shadow)}
+.grid{display:grid;grid-template-columns:1fr;gap:13px;margin-top:13px}
+.card{border-radius:24px;padding:18px;border:1px solid var(--line);background:var(--card);box-shadow:var(--shadow)}
+.card-title{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px}.card-title h2{font-size:17px}
+.subtle{font-size:12px;color:var(--muted)}.small-note{font-size:11px;color:var(--muted);line-height:1.55}
+.big{font-size:58px;font-family:Georgia,serif;color:var(--deep)}
+.btn{padding:10px 14px;border-radius:14px;background:var(--pink2);color:#6f4150}.btn.secondary{background:var(--soft)}
+.input,textarea,select{width:100%;border:1px solid var(--line);outline:none;border-radius:14px;background:white;padding:11px 12px}
+textarea{min-height:110px;resize:vertical}.row{display:flex;gap:8px;align-items:center}.stack{display:grid;gap:9px}
+.tool-grid,.study-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.tile{padding:14px 10px;border-radius:17px;background:#fff8fa;border:1px solid var(--line);text-align:center}.tile .emoji{font-size:24px;margin-bottom:6px}
+.course-item,.ledger-item,.parcel-item,.link-item,.period-item{display:grid;grid-template-columns:1fr auto;gap:8px;padding:10px 0;border-bottom:1px solid #f2e8ec}
+.bottom-nav{position:fixed;left:50%;bottom:12px;transform:translateX(-50%);width:min(94%,680px);display:grid;grid-template-columns:repeat(5,1fr);padding:7px;background:rgba(255,250,248,.93);border:1px solid var(--line);border-radius:24px;box-shadow:0 12px 35px rgba(123,80,92,.14);z-index:50}
+.nav-item{background:transparent;color:#9b858b;font-size:11px;padding:6px 2px}.nav-item span{display:block;font-size:20px}.nav-item.active{color:var(--deep);font-weight:700}
+.panel{display:none}.panel.active{display:block}.search-results{display:grid;gap:8px;margin-top:10px}.result{padding:10px 12px;border:1px solid var(--line);border-radius:14px;background:#fff}
+.modal{position:fixed;inset:0;background:rgba(70,50,58,.28);display:none;align-items:center;justify-content:center;padding:18px;z-index:100}.modal.show{display:flex}
+.modal-box{width:min(100%,460px);max-height:88vh;overflow:auto;background:#fffafc;border-radius:24px;padding:18px;box-shadow:0 20px 60px rgba(70,50,58,.2)}
+.photo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.photo-cell{position:relative;aspect-ratio:1;border-radius:14px;background:#fff6f8;border:1px solid var(--line);overflow:hidden;display:grid;place-items:center}.photo-cell img{width:100%;height:100%;object-fit:cover}.photo-del{position:absolute;right:6px;top:6px;width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,.88)}
+.weather-main{display:flex;justify-content:space-between;align-items:center}.temp{font-size:48px;color:var(--deep)}
+.word-card{padding:16px;border-radius:18px;background:#fff8fa;border:1px solid var(--line)}.word-en{font-size:28px;font-family:Georgia,serif;color:var(--deep)}.word-zh{margin-top:6px}
+.practice-box{padding:12px;border-radius:16px;background:#fff8fa;border:1px solid var(--line)}
+.progress{height:10px;background:#f7e7ed;border-radius:99px;overflow:hidden}.progress>i{display:block;height:100%;background:linear-gradient(90deg,#f3b4c6,#d96e91);width:0%}
+video{width:100%;border-radius:18px;background:#111;max-height:50vh}
+.badge{display:inline-block;padding:4px 8px;border-radius:99px;background:#fff0f5;color:#9c6173;font-size:11px}
+@media(min-width:720px){.grid{grid-template-columns:1fr 1fr}.span-2{grid-column:span 2}.tool-grid,.study-grid{grid-template-columns:repeat(4,1fr)}}
+</style>
+</head>
+<body>
+<main class="app">
+<header class="topbar">
+  <div><div class="brand">CampusMate*</div><div class="tagline">STUDY · LIFE · A BRIGHTER YOU.</div></div>
+  <div class="top-actions">
+    <button class="icon-btn" onclick="showPanel('search')">⌕</button>
+    <button class="icon-btn" onclick="showPanel('tools')">🧰</button>
+    <button class="icon-btn" onclick="showPanel('profile')">🐶</button>
+  </div>
+</header>
+
+<section class="hero">
+  <h1>按自己的节奏，<br>慢慢变好。</h1>
+  <div class="hero-en">A CALMER MIND<br>A BRIGHTER YOU.</div>
+  <div class="sticky">Same Campus<br>Same Dreams<br><b>A Brighter You.</b></div>
+  <div class="hero-dog">🐶</div>
+</section>
+<section class="notice"><span>♡ 今天也要好好学习呀！</span><span id="todayText"></span></section>
+
+<section id="home" class="panel active">
+<div class="grid">
+  <section class="card">
+    <div class="card-title"><h2>英语三级考试</h2><button class="btn secondary" onclick="openExam()">修改日期</button></div>
+    <div class="row"><div class="big" id="daysLeft">--</div><div>天</div></div><div class="subtle" id="examText"></div>
+  </section>
+
+  <section class="card">
+    <div class="card-title"><h2>今日专注</h2><span class="subtle">番茄钟</span></div>
+    <div class="big" id="timerText">25:00</div>
+    <div class="row" style="margin-top:12px"><button class="btn" id="timerBtn" onclick="toggleTimer()">开始专注</button><button class="btn secondary" onclick="resetTimer()">重置</button></div>
+  </section>
+
+  <section class="card span-2">
+    <div class="card-title"><h2>英语三级学习中心</h2><span class="badge">练习版</span></div>
+    <div class="study-grid">
+      <button class="tile" onclick="openStudy('word')"><div class="emoji">📖</div><b>三级单词</b><div class="subtle" id="wordCount">0/20</div></button>
+      <button class="tile" onclick="openStudy('listen')"><div class="emoji">🎧</div><b>听力</b><div class="subtle">练习记录</div></button>
+      <button class="tile" onclick="openStudy('read')"><div class="emoji">📚</div><b>阅读</b><div class="subtle">小练习</div></button>
+      <button class="tile" onclick="openStudy('write')"><div class="emoji">✏️</div><b>写作</b><div class="subtle">模板练习</div></button>
+      <button class="tile" onclick="showPanel('courses')"><div class="emoji">💻</div><b>网课</b><div class="subtle">保存链接</div></button>
+    </div>
+    <div class="small-note" style="margin-top:10px">这里是自建练习区，不冒充官方题库；后续可以继续导入你老师给的资料或真题。</div>
+  </section>
+
+  <section class="card span-2">
+    <div class="card-title"><h2>My little world</h2><span class="subtle">自己的照片墙</span></div>
+    <input type="file" accept="image/*" id="photoInput" multiple hidden onchange="handlePhotos(event)">
+    <button class="btn" onclick="photoInput.click()">＋ 添加照片</button>
+    <div class="photo-grid" id="photoGrid" style="margin-top:12px"></div>
+    <div class="small-note" style="margin-top:8px">照片只保存在当前浏览器设备里，不会自动上传到云端。</div>
+  </section>
+</div>
+</section>
+
+<section id="courses" class="panel">
+<div class="grid">
+  <section class="card">
+    <div class="card-title"><h2>课程表</h2><button class="btn secondary" onclick="showPanel('home')">返回</button></div>
+    <div class="stack">
+      <input class="input" id="courseName" placeholder="课程名称">
+      <input class="input" id="courseRoom" placeholder="教室">
+      <div class="row"><select id="courseDay"><option>周一</option><option>周二</option><option>周三</option><option>周四</option><option>周五</option><option>周六</option><option>周日</option></select><input class="input" id="courseTime" placeholder="08:00-09:40"></div>
+      <button class="btn" onclick="addCourse()">添加课程</button><div id="courseList"></div>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="card-title"><h2>网课收藏</h2><span class="subtle">保存链接</span></div>
+    <div class="stack">
+      <input class="input" id="linkTitle" placeholder="网课名称">
+      <input class="input" id="linkUrl" placeholder="https://...">
+      <button class="btn" onclick="addCourseLink()">保存网课</button>
+      <div id="linkList"></div>
+    </div>
+  </section>
+</div>
+</section>
+
+<section id="tools" class="panel"><div class="grid">
+  <section class="card">
+    <div class="card-title"><h2>天气</h2><span>☁️</span></div>
+    <div class="stack">
+      <div class="row"><input class="input" id="weatherCity" placeholder="输入城市，例如 台中"><button class="btn" onclick="loadWeather()">查询</button></div>
+      <div class="weather-main"><div><div class="temp" id="weatherTemp">--°</div><div id="weatherText">输入城市查询天气</div></div><div style="font-size:50px" id="weatherIcon">☁️</div></div>
+      <div class="small-note">无需开启精确定位。天气数据使用公开天气接口。</div>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="card-title"><h2>快递助手</h2><span>📦</span></div>
+    <div class="stack">
+      <input class="input" id="parcelCode" placeholder="取件码 / 快递单号">
+      <button class="btn" onclick="addParcel()">保存待取快递</button>
+      <button class="btn secondary" onclick="startScanner()">📷 打开相机扫码</button>
+      <div id="parcelList"></div>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="card-title"><h2>记账助手</h2><span>💰</span></div>
+    <div class="stack">
+      <div class="row"><input class="input" id="moneyAmount" type="number" step="0.01" placeholder="金额"><select id="moneyType"><option>餐饮</option><option>交通</option><option>购物</option><option>学习</option><option>其他</option></select></div>
+      <input class="input" id="moneyNote" placeholder="备注">
+      <button class="btn" onclick="addLedger()">记一笔</button>
+      <div><b>本月支出：¥<span id="monthTotal">0.00</span></b></div>
+      <div class="progress"><i id="budgetBar"></i></div>
+      <div class="row"><input class="input" id="budgetInput" type="number" placeholder="本月预算"><button class="btn secondary" onclick="saveBudget()">设预算</button></div>
+      <div id="ledgerList"></div>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="card-title"><h2>生理期记录</h2><span>🌷</span></div>
+    <div class="stack">
+      <label class="small-note">开始日期</label><input class="input" id="periodStart" type="date">
+      <label class="small-note">平均周期（天）</label><input class="input" id="cycleDays" type="number" value="28" min="20" max="45">
+      <label class="small-note">平均经期长度（天）</label><input class="input" id="periodDays" type="number" value="5" min="2" max="10">
+      <input class="input" id="periodNote" placeholder="可选：心情/不适备注">
+      <button class="btn" onclick="savePeriod()">记录这一次</button>
+      <div id="periodResult" class="subtle"></div>
+      <div id="periodHistory"></div>
+      <div class="small-note">预测仅为日历估算，不用于诊断、避孕或医学判断。</div>
+    </div>
+  </section>
+</div></section>
+
+<section id="search" class="panel">
+<div class="card">
+  <div class="card-title"><h2>站内搜索</h2><button class="btn secondary" onclick="showPanel('home')">返回</button></div>
+  <input class="input" id="searchInput" placeholder="搜索课程、网课、快递、记账、学习内容..." oninput="runSearch()">
+  <div id="searchResults" class="search-results"></div>
+</div>
+</section>
+
+<section id="profile" class="panel">
+<div class="card">
+  <div class="card-title"><h2>我的</h2><button class="btn secondary" onclick="showPanel('home')">返回</button></div>
+  <div class="stack">
+    <input class="input" id="nickname" placeholder="昵称"><button class="btn" onclick="saveProfile()">保存昵称</button>
+    <div style="font-size:20px">🐶 <b id="profileName">CampusMate 用户</b></div>
+    <div class="subtle">课程数量：<span id="profileCourses">0</span></div>
+    <div class="subtle">网课收藏：<span id="profileLinks">0</span></div>
+    <div class="subtle">待取快递：<span id="profileParcels">0</span></div>
+    <div class="subtle">本月支出：¥<span id="profileMoney">0.00</span></div>
+    <div class="small-note">你的课程、账本、生理期等数据默认只存当前浏览器。</div>
+  </div>
+</div>
+</section>
+</main>
+
+<nav class="bottom-nav">
+  <button class="nav-item active" onclick="showPanel('home',this)"><span>⌂</span>首页</button>
+  <button class="nav-item" onclick="showPanel('courses',this)"><span>▦</span>课程表</button>
+  <button class="nav-item" onclick="openStudy('word');showPanel('home',this)"><span>✎</span>学习</button>
+  <button class="nav-item" onclick="showPanel('tools',this)"><span>☷</span>工具</button>
+  <button class="nav-item" onclick="showPanel('profile',this)"><span>♡</span>我的</button>
+</nav>
+
+<div class="modal" id="examModal"><div class="modal-box"><h3>修改考试日期</h3><input class="input" id="examDateInput" type="date"><div class="row" style="margin-top:12px"><button class="btn secondary" onclick="closeExam()">取消</button><button class="btn" onclick="saveExam()">保存</button></div></div></div>
+
+<div class="modal" id="studyModal"><div class="modal-box">
+  <div class="card-title"><h3 id="studyTitle">学习</h3><button class="btn secondary" onclick="closeStudy()">关闭</button></div>
+  <div id="studyBody"></div>
+</div></div>
+
+<div class="modal" id="scanModal"><div class="modal-box">
+  <div class="card-title"><h3>扫码</h3><button class="btn secondary" onclick="stopScanner()">关闭</button></div>
+  <video id="scanVideo" autoplay playsinline></video>
+  <div id="scanStatus" class="subtle" style="margin-top:10px">准备打开相机…</div>
+  <div class="small-note" style="margin-top:8px">如果浏览器不支持扫码识别，仍可关闭后手动输入取件码。</div>
+</div></div>
+
+<script>
+const $=id=>document.getElementById(id);
+const S={
+  exam:'cmExamV3',courses:'cmCoursesV3',links:'cmLinksV3',parcels:'cmParcelsV3',
+  ledger:'cmLedgerV3',budget:'cmBudgetV3',period:'cmPeriodV3',profile:'cmProfileV3',
+  weatherCity:'cmWeatherCityV3',wordProgress:'cmWordProgressV3'
+};
+function get(k,d){try{return JSON.parse(localStorage.getItem(k))??d}catch{return d}}
+function set(k,v){localStorage.setItem(k,JSON.stringify(v))}
+$('todayText').textContent=(()=>{const d=new Date();return `${d.getMonth()+1}月${d.getDate()}日`})();
+
+function showPanel(id,btn){
+  document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));
+  $(id).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(x=>x.classList.remove('active'));
+  if(btn)btn.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+  refreshProfile();
+}
+function esc(s=''){return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
+
+function openExam(){$('examDateInput').value=get(S.exam,'2026-11-22');$('examModal').classList.add('show')}
+function closeExam(){$('examModal').classList.remove('show')}
+function saveExam(){set(S.exam,$('examDateInput').value||'2026-11-22');closeExam();updateExam()}
+function updateExam(){const v=get(S.exam,'2026-11-22');const e=new Date(v+'T00:00:00'),n=new Date();n.setHours(0,0,0,0);$('daysLeft').textContent=Math.max(0,Math.ceil((e-n)/86400000));$('examText').textContent=v}updateExam();
+
+let timer=1500,run=false,tInt=null;
+function drawTimer(){$('timerText').textContent=`${String(Math.floor(timer/60)).padStart(2,'0')}:${String(timer%60).padStart(2,'0')}`}
+function toggleTimer(){const b=$('timerBtn');if(run){run=false;clearInterval(tInt);b.textContent='继续专注';return}run=true;b.textContent='暂停';tInt=setInterval(()=>{timer--;drawTimer();if(timer<=0){clearInterval(tInt);run=false;timer=0;b.textContent='开始专注';alert('25 分钟完成啦 ♡')}},1000)}
+function resetTimer(){clearInterval(tInt);run=false;timer=1500;drawTimer();$('timerBtn').textContent='开始专注'}drawTimer();
+
+const words=[
+ ['benefit','益处；使受益','Regular practice can benefit your study.'],
+ ['improve','改善；提高','Reading can improve your vocabulary.'],
+ ['environment','环境','We should protect the environment.'],
+ ['experience','经历；经验','This activity was a useful experience.'],
+ ['important','重要的','Sleep is important for students.'],
+ ['provide','提供','The library provides a quiet place.'],
+ ['possible','可能的','It is possible to learn step by step.'],
+ ['future','未来','I want to prepare for my future.'],
+ ['communicate','交流','We communicate with classmates every day.'],
+ ['develop','发展；培养','Good habits develop slowly.'],
+ ['suggest','建议','I suggest making a simple plan.'],
+ ['choose','选择','Choose the answer carefully.'],
+ ['remember','记得','Remember to review new words.'],
+ ['different','不同的','People have different learning styles.'],
+ ['practice','练习','Practice makes progress.'],
+ ['necessary','必要的','It is necessary to rest well.'],
+ ['healthy','健康的','A healthy routine helps concentration.'],
+ ['reason','原因','Please give a reason for your answer.'],
+ ['result','结果','The result will come later.'],
+ ['prepare','准备','Prepare your notes before class.']
+];
+function openStudy(type){
+  $('studyModal').classList.add('show');
+  if(type==='word') renderWord();
+  if(type==='listen'){ $('studyTitle').textContent='听力练习'; $('studyBody').innerHTML=`<div class="stack"><div class="practice-box"><b>练习方法</b><div class="subtle" style="margin-top:6px">先听一遍抓主旨 → 第二遍记关键词 → 第三遍核对。</div></div><label class="small-note">今天练了几分钟？</label><input class="input" id="listenMin" type="number" placeholder="例如 20"><button class="btn" onclick="saveStudyRecord('listen')">保存记录</button><div id="listenInfo" class="subtle">${get('cmListenInfo','还没有记录')}</div></div>`}
+  if(type==='read'){ $('studyTitle').textContent='阅读小练习'; $('studyBody').innerHTML=`<div class="stack"><div class="practice-box">Campus life can be busy, but a simple plan helps students use time better. Short breaks can also improve concentration.</div><b>问题：这段话主要想表达什么？</b><button class="btn secondary" onclick="alert('答案：合理计划时间，并适当休息有助于提高专注。')">查看答案</button><label class="small-note">记录今天阅读正确率</label><input class="input" id="readRate" placeholder="例如 80%"><button class="btn" onclick="saveStudyRecord('read')">保存</button><div class="subtle">${get('cmReadInfo','还没有记录')}</div></div>`}
+  if(type==='write'){ $('studyTitle').textContent='写作练习'; $('studyBody').innerHTML=`<div class="stack"><div class="practice-box"><b>常用结构</b><div class="subtle" style="margin-top:6px">开头：Nowadays, ... is becoming increasingly important.<br>正文：First, ... Second, ...<br>结尾：In my opinion, we should ...</div></div><textarea id="writeText" placeholder="在这里写一小段英文...">${esc(get('cmWriteDraft',''))}</textarea><button class="btn" onclick="localStorage.setItem('cmWriteDraft',$('writeText').value);alert('草稿已保存')">保存草稿</button></div>`}
+}
+function closeStudy(){$('studyModal').classList.remove('show')}
+function renderWord(){
+  const p=get(S.wordProgress,{index:0,known:0});
+  const w=words[p.index%words.length];
+  $('studyTitle').textContent='三级单词练习';
+  $('studyBody').innerHTML=`<div class="stack"><div class="word-card"><div class="word-en">${w[0]}</div><div class="word-zh">${w[1]}</div><div class="subtle" style="margin-top:8px">${w[2]}</div></div><div class="row"><button class="btn secondary" onclick="nextWord(false)">还不熟</button><button class="btn" onclick="nextWord(true)">认识了</button></div><div class="subtle">已认识 ${p.known} / ${words.length}</div></div>`;
+  $('wordCount').textContent=`${Math.min(p.known,words.length)}/${words.length}`;
+}
+function nextWord(known){
+  let p=get(S.wordProgress,{index:0,known:0});
+  if(known)p.known=Math.min(words.length,p.known+1);
+  p.index=(p.index+1)%words.length;set(S.wordProgress,p);renderWord()
+}
+function saveStudyRecord(type){
+  if(type==='listen'){localStorage.setItem('cmListenInfo',`今天练习 ${$('listenMin').value||0} 分钟`);$('listenInfo').textContent=localStorage.getItem('cmListenInfo')}
+  if(type==='read'){localStorage.setItem('cmReadInfo',`最近记录：${$('readRate').value||'未填写'}`);alert('已保存')}
+}
+(()=>{const p=get(S.wordProgress,{index:0,known:0});$('wordCount').textContent=`${Math.min(p.known,words.length)}/${words.length}`})();
+
+function addCourse(){let a=get(S.courses,[]);const n=$('courseName').value.trim();if(!n)return;a.push({name:n,room:$('courseRoom').value.trim(),day:$('courseDay').value,time:$('courseTime').value.trim()});set(S.courses,a);$('courseName').value='';$('courseRoom').value='';$('courseTime').value='';renderCourses()}
+function renderCourses(){const a=get(S.courses,[]);$('courseList').innerHTML=a.length?'':'';a.forEach((c,i)=>$('courseList').innerHTML+=`<div class="course-item"><div><b>${esc(c.day)} ${esc(c.time||'')} · ${esc(c.name)}</b><div class="subtle">${esc(c.room||'')}</div></div><button onclick="delCourse(${i})">×</button></div>`)}
+function delCourse(i){let a=get(S.courses,[]);a.splice(i,1);set(S.courses,a);renderCourses()}renderCourses();
+
+function addCourseLink(){let a=get(S.links,[]);const title=$('linkTitle').value.trim(),url=$('linkUrl').value.trim();if(!title||!url)return;if(!/^https?:\/\//i.test(url)){alert('链接请以 http:// 或 https:// 开头');return}a.push({title,url});set(S.links,a);$('linkTitle').value='';$('linkUrl').value='';renderLinks()}
+function renderLinks(){const a=get(S.links,[]);$('linkList').innerHTML='';a.forEach((x,i)=>$('linkList').innerHTML+=`<div class="link-item"><div><b>${esc(x.title)}</b><div class="subtle">${esc(x.url)}</div></div><div><button onclick="window.open('${x.url.replace(/'/g,"%27")}','_blank')">打开</button> <button onclick="delLink(${i})">×</button></div></div>`)}
+function delLink(i){let a=get(S.links,[]);a.splice(i,1);set(S.links,a);renderLinks()}renderLinks();
+
+function addParcel(){let a=get(S.parcels,[]),v=$('parcelCode').value.trim();if(!v)return;a.push({code:v,time:new Date().toLocaleString()});set(S.parcels,a);$('parcelCode').value='';renderParcels()}
+function renderParcels(){const a=get(S.parcels,[]);$('parcelList').innerHTML='';a.forEach((x,i)=>$('parcelList').innerHTML+=`<div class="parcel-item"><div><b>${esc(x.code||x)}</b><div class="subtle">${esc(x.time||'')}</div></div><button onclick="delParcel(${i})">已取</button></div>`)}
+function delParcel(i){let a=get(S.parcels,[]);a.splice(i,1);set(S.parcels,a);renderParcels()}renderParcels();
+
+let scanStream=null,scanTimer=null,detector=null;
+async function startScanner(){
+  $('scanModal').classList.add('show');$('scanStatus').textContent='正在请求相机权限…';
+  try{
+    scanStream=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:'environment'}}});
+    $('scanVideo').srcObject=scanStream;
+    if('BarcodeDetector' in window){
+      detector=new BarcodeDetector({formats:['qr_code','code_128','ean_13','ean_8','upc_a','upc_e']});
+      $('scanStatus').textContent='把快递码放到镜头中';
+      scanTimer=setInterval(scanFrame,700);
+    }else{
+      $('scanStatus').textContent='相机已打开，但当前浏览器不支持自动识别；可关闭后手动输入。';
+    }
+  }catch(e){$('scanStatus').textContent='相机无法打开，请检查浏览器相机权限。'}
+}
+async function scanFrame(){
+  if(!detector||!$('scanVideo').videoWidth)return;
+  try{
+    const res=await detector.detect($('scanVideo'));
+    if(res.length){
+      const value=res[0].rawValue||'';
+      $('parcelCode').value=value;
+      $('scanStatus').textContent='识别成功：'+value;
+      setTimeout(()=>{stopScanner();addParcel()},500)
+    }
+  }catch(e){}
+}
+function stopScanner(){if(scanTimer)clearInterval(scanTimer);scanTimer=null;if(scanStream){scanStream.getTracks().forEach(t=>t.stop());scanStream=null}$('scanModal').classList.remove('show')}
+
+async function loadWeather(){
+  const city=$('weatherCity').value.trim();if(!city)return;
+  set(S.weatherCity,city);$('weatherText').textContent='正在查询 '+city+'…';
+  try{
+    const g=await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&count=1&language=zh&format=json`).then(r=>r.json());
+    if(!g.results||!g.results.length)throw 0;
+    const p=g.results[0];
+    const w=await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${p.latitude}&longitude=${p.longitude}&current=temperature_2m,weather_code,wind_speed_10m&timezone=auto`).then(r=>r.json());
+    $('weatherTemp').textContent=Math.round(w.current.temperature_2m)+'°';
+    $('weatherText').textContent=`${p.name} · 风速 ${Math.round(w.current.wind_speed_10m)} km/h`;
+    const code=w.current.weather_code;
+    $('weatherIcon').textContent=code===0?'☀️':code<=3?'⛅':code<=67?'🌧️':code<=77?'🌨️':'⛈️';
+  }catch(e){$('weatherText').textContent='没有查到这个城市，请换个名字试试'}
+}
+$('weatherCity').value=get(S.weatherCity,'');
+
+function addLedger(){let a=get(S.ledger,[]),amt=Number($('moneyAmount').value);if(!amt||amt<0)return;a.push({amt,type:$('moneyType').value,note:$('moneyNote').value.trim(),date:new Date().toISOString().slice(0,10)});set(S.ledger,a);$('moneyAmount').value='';$('moneyNote').value='';renderLedger()}
+function renderLedger(){
+  const a=get(S.ledger,[]);$('ledgerList').innerHTML='';let total=0,ym=new Date().toISOString().slice(0,7);
+  a.slice().reverse().slice(0,12).forEach((x,ri)=>{const i=a.length-1-ri;if(x.date.startsWith(ym)){};$('ledgerList').innerHTML+=`<div class="ledger-item"><div><b>¥${Number(x.amt).toFixed(2)} · ${esc(x.type)}</b><div class="subtle">${esc(x.note||x.date)}</div></div><button onclick="delLedger(${i})">×</button></div>`});
+  a.forEach(x=>{if(x.date.startsWith(ym))total+=Number(x.amt)});
+  $('monthTotal').textContent=total.toFixed(2);$('profileMoney').textContent=total.toFixed(2);
+  const b=Number(get(S.budget,0));$('budgetInput').value=b||'';$('budgetBar').style.width=b?Math.min(100,total/b*100)+'%':'0%';
+}
+function delLedger(i){let a=get(S.ledger,[]);a.splice(i,1);set(S.ledger,a);renderLedger()}
+function saveBudget(){set(S.budget,Number($('budgetInput').value||0));renderLedger()}renderLedger();
+
+function savePeriod(){
+  const start=$('periodStart').value,cycle=Number($('cycleDays').value||28),days=Number($('periodDays').value||5),note=$('periodNote').value.trim();if(!start)return;
+  let a=get(S.period,[]);a.push({start,cycle,days,note});a=a.slice(-12);set(S.period,a);$('periodNote').value='';renderPeriod()
+}
+function renderPeriod(){
+  const a=get(S.period,[]);$('periodHistory').innerHTML='';
+  if(!a.length){$('periodResult').textContent='还没有记录';return}
+  const p=a[a.length-1];$('periodStart').value=p.start;$('cycleDays').value=p.cycle;$('periodDays').value=p.days;
+  const d=new Date(p.start+'T00:00:00');d.setDate(d.getDate()+p.cycle);
+  $('periodResult').textContent=`预计下一次开始：${d.toLocaleDateString('zh-CN')}（仅估算）`;
+  a.slice().reverse().forEach((x,ri)=>{const i=a.length-1-ri;$('periodHistory').innerHTML+=`<div class="period-item"><div><b>${esc(x.start)}</b><div class="subtle">周期 ${x.cycle} 天 · 经期 ${x.days} 天 ${x.note?'· '+esc(x.note):''}</div></div><button onclick="delPeriod(${i})">×</button></div>`})
+}
+function delPeriod(i){let a=get(S.period,[]);a.splice(i,1);set(S.period,a);renderPeriod()}renderPeriod();
+
+function saveProfile(){set(S.profile,{name:$('nickname').value.trim()||'CampusMate 用户'});refreshProfile()}
+function refreshProfile(){const p=get(S.profile,{name:'CampusMate 用户'});$('profileName').textContent=p.name;$('nickname').value=p.name;$('profileCourses').textContent=get(S.courses,[]).length;$('profileLinks').textContent=get(S.links,[]).length;$('profileParcels').textContent=get(S.parcels,[]).length;renderLedger()}
+function runSearch(){
+  const q=$('searchInput').value.trim().toLowerCase();$('searchResults').innerHTML='';if(!q)return;
+  let rows=[];
+  get(S.courses,[]).forEach(x=>rows.push(`课程：${x.day} ${x.time||''} ${x.name} ${x.room||''}`));
+  get(S.links,[]).forEach(x=>rows.push(`网课：${x.title} ${x.url}`));
+  get(S.parcels,[]).forEach(x=>rows.push(`快递：${x.code||x}`));
+  get(S.ledger,[]).forEach(x=>rows.push(`记账：${x.type} ${x.note||''} ¥${x.amt}`));
+  words.forEach(w=>rows.push(`单词：${w[0]} ${w[1]}`));
+  rows.filter(x=>x.toLowerCase().includes(q)).forEach(x=>$('searchResults').innerHTML+=`<div class="result">${esc(x)}</div>`);
+  if(!$('searchResults').innerHTML)$('searchResults').innerHTML='<div class="subtle">没有找到相关内容</div>'
+}
+
+function openPhotoDB(){return new Promise((resolve,reject)=>{const r=indexedDB.open('CampusMateDB',1);r.onupgradeneeded=e=>{if(!e.target.result.objectStoreNames.contains('photos'))e.target.result.createObjectStore('photos',{keyPath:'id',autoIncrement:true})};r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error)})}
+async function handlePhotos(e){
+  const db=await openPhotoDB();const tx=db.transaction('photos','readwrite'),store=tx.objectStore('photos');
+  [...e.target.files].slice(0,9).forEach(f=>store.add({blob:f,time:Date.now()}));tx.oncomplete=()=>renderPhotos()
+}
+async function getPhotos(){const db=await openPhotoDB();return new Promise((resolve,reject)=>{const r=db.transaction('photos').objectStore('photos').getAll();r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error)})}
+async function renderPhotos(){
+  const a=await getPhotos();$('photoGrid').innerHTML='';
+  if(!a.length){$('photoGrid').innerHTML='<div class="photo-cell">＋</div>';return}
+  a.forEach(x=>{const url=URL.createObjectURL(x.blob);$('photoGrid').innerHTML+=`<div class="photo-cell"><img src="${url}"><button class="photo-del" onclick="delPhoto(${x.id})">×</button></div>`})
+}
+async function delPhoto(id){const db=await openPhotoDB();const tx=db.transaction('photos','readwrite');tx.objectStore('photos').delete(id);tx.oncomplete=()=>renderPhotos()}
+renderPhotos();
+
+refreshProfile();
+</script>
+</body>
+</html>
